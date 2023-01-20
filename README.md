@@ -1,4 +1,4 @@
-###Uwagi ogólne:
+### Uwagi ogólne:
 ![state.png](img/state.png)
 
 W Keccaku mamy stan.\
@@ -35,7 +35,7 @@ dopisujemy do S kolejne bity (klocki):
   - w przód: z+1, w tył: z-1
 - wszystkie indeksy x,y,z są mod(dany wymiar), czyli jak na przykład mamy x=-1 a przecież x jest od 0 do 4, to tak naprawdę chodzi nam o x=4
 - czyli jak mamy kolumnę na samym prawym brzegu (np x=4, y, z) to kolumna na prawo od niej będzie x=0, y, z
-###Theta:
+### Theta:
 wejście: stan *A* \
 wyjście: nowy stan *A'* \
 początkowo: A' <- A 
@@ -50,7 +50,7 @@ Dla każdego bitu A'(x,y,z) :
 ![img.png](img/theta.png)
 
 
-###Ro:
+### Ro:
 wejście: stan *A* \
 wyjście: nowy stan *A'*
 początkowo: A' <- A \
