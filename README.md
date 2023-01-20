@@ -62,7 +62,7 @@ początkowo: A' <- A \
 
 ![rho.png](img/rho.png)
 ![rho_values.png](img/rho_values.png)
-###Pi:
+### Pi:
 wejście: stan *A* \
 wyjście: nowy stan *A'*
 początkowo: A' <- A 
@@ -74,7 +74,7 @@ Dla każdego bitu:
 
 ![pi.png](img/pi.png)
 
-###Chi:
+### Chi:
 wejście: stan *A* \
 wyjście: nowy stan *A'* \
 początkowo: A' <- A \
@@ -88,12 +88,12 @@ początkowo: A' <- A \
 czyli mamy bit, bierzemy jeden bit na prawo i dodajemy jeden i otrzymujemy jakiś bit, potem bierzemy bit o dwa na prawo
 i te dwa bity mnożymy przez siebie i w A' dodajemy do tego co już tam siedziało.
 
-##Iota:
+## Iota:
 wejście: stan A, numer rundy i<sub>r</sub> \
 wyjście: nowy stan A'
 
 Z numeru rundy musimy obliczyć stałą rundy która będzie wykorzystywana w obliczeniach
-####Algorytm rc(t) którego będziemy używać do obliczenia stałej rundy RC:
+#### Algorytm rc(t) którego będziemy używać do obliczenia stałej rundy RC:
 - jak t mod 255 = 0 to zwracamy 1
 - ustawiamy nową zmienną R na 10000000 (nie liczba tylko ciąg bitów)
 - lecimy (t mod 255) razy:
@@ -103,7 +103,7 @@ Z numeru rundy musimy obliczyć stałą rundy która będzie wykorzystywana w ob
 
 - numer rundy to zerowy element powstałego R, oznaczamy jako rc
 
-####Operacje:
+#### Operacje:
 RC - lista **w** zer (pamiętamy że w SHA-3 w=64 ale algorytm jest generyczny)
 - dla j od 0 do log<sub>2</sub>w ustalamy (np w SHA-3 od 0 do 6):
   - RC[2<sup>j</sup> - 1] = rc(j + 7i) 
@@ -145,7 +145,7 @@ I ta kompatybilność np powoduje, że Keccak-p przy długości stanu 1600 i 24 
 
 A po co kompatybilność? \
 Bo Keccak-f jest używane do SHA-3 a Keccak-p jest generyczne.
-##Gąbka:
+## Gąbka:
 ![sponge.png](img/sponge.png)
 - mamy tę naszą funkcję f tzn jota teta itd ileś tam rund, przyjmuje stan i oddaje stan
 - mamy zmienną r (długość bloku) mniejszą od b, oraz zmienną c która razem z r daje b (czyli b = r+c)
