@@ -216,7 +216,7 @@ i teraz tak:
 Dla stringa i funkcji sha3_256:
 ```python
 m1 = b"krys".hex()
-h1 = get_hash(m, sha3_256)
+h1 = get_hash(m1, sha3_256)
 print(h1)
 ```
 otrzymujemy:
