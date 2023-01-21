@@ -185,3 +185,71 @@ i teraz tak:
 - SHA-3-256 - r = 512 (c = 1088) d = 256
 - SHA-3-384 - r = 768 (c = 832 d = 384
 - SHA-3-512 - r = 512 (c = 1088) d = 512
+
+## Co zostało zaimplementowane
+
+## Główne rzeczy
+- funkcja Theta
+- funkcja Rho (przesunięcia obliczane a nie podstawiane)
+- funkcja Pi
+- funkcja Chi
+- funkcja Iota (stałe rundowe obliczane a nie podstawiane)
+- funkcja robiąca rundę (złożenie w/w funkcji)
+- funkcja paddingująca
+- funkcja gąbki (tzn padding + zasysanie + wyciskanie)
+- funkcja keccak-p (ta generyczna)
+- funkcja keccak-f (szczegolny przypadek keccak-p z tym że liczba rund nie dowolna ale zależy od długości stanu)
+- funkcja keccak (szczegolny przypadek keccak-f - długość stanu ustalona na 1600 bitów, a wiec rund 24)
+- szczególne przypadki funkcji keccak tzn:
+  - SHA3-224 - output 224 bity, c = 448 bitów
+  - SHA3-256 - output 256 bitów, c = 512 bitów
+  - SHA3-384 - output 384 bitów, c = 768
+  - SHA3-512 - output 512 bitów, c = 1024
+  - funkcje przyjmują stringi w postaci hex stringa i zwracają hash w postaci hex stringa
+
+## Poboczne rzeczy
+- dla przedstawienia wyników: 
+  - funkcja zamieniająca string hex na listę pojedynczych bitów
+  - funkcja zamieniająca listę pojedynczych bitów na string hex
+
+## wyniki:
+Dla stringa i funkcji sha3_256:
+```python
+m1 = b"krys".hex()
+h1 = get_hash(m, sha3_256)
+print(h1)
+```
+otrzymujemy:
+```
+14896893efee07c90b08b1f4c0c4d8e32f8414414c0027f80b0a261b59f2de95
+```
+
+Zmieniamy wiadomość na krxs: (wiadomość różni się od tej pierwszej tylko jednym bitem)
+```python
+m2 = b"krxs".hex()
+h2 = get_hash(m1, sha3_256)
+print(h2)
+```
+otrzymujemy:
+```
+0cb61545311154f0d1537b79b6b615699c1e69d26c6b377ed86fb507b2c73076
+```
+
+widać, że zmieniliśmy tylko jeden bit na wejściu, wpłynęło to lawinowo na cały hash
+
+### Porównanie z narzędziami online
+Ogółem:
+https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+W dodatkach B1, B2 w/w dokumentu jest napisane jak przygotować wiadomość do algorytmu jeśli jest ona byte-aligned (tzn ma długość 8n bitów) (m.in inny padding).\
+różne narzędzia online prawdopodobnie się do tego stosują. Dlatego nie należy się spodziewać że to co my otrzymujemy będzie tym samym co dostaniemy używając gotowych bibliotek.
+\Dwa stringi dają poniższe hashe w narzędziach online:
+```
+832bdd820d60d86a55dbb23f9dd73e622c40c68d6e7b4a56cb7cb3708eb9b2c3 # dla stringa "krys"
+d523f1ced7a00a059d3935a3a372fa28328ece8abac1106935abfbf366065479 # dla stringa "krxs"
+```
+##### Czy to źle, że się różni?
+No nie do końca. To nie oznacza, że implementacja jest zła.
+Po prostu nie zostały zaimplementowane te funkcje które przekształcają wiadomość zgodnie z FIPS 202.
+(dużo zachodu z tym a i też po co) \
+Ale my mamy algorytm Keccak, który jest generyczny więc nawet tego nie musimy robić.
+

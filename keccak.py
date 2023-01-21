@@ -3,11 +3,12 @@ from __future__ import annotations
 from typing import List, Iterable, Tuple, Callable
 from itertools import product
 
+
 Bit = int
 Bit3DMatrix = List[List[List[int]]]
 BitList = List[Bit]
 b_to_l = {25: 0, 50: 1, 100: 2, 200: 3, 400: 4, 800: 5, 1600: 6}
-
+from Crypto.Hash.keccak import Keccak_Hash
 
 def pad(m: int, r: int) -> BitList:
     j = (-m - 2) % r
@@ -53,7 +54,6 @@ class State:
         state = State(len(S))
         for x, y, z in product(range(5), range(5), range(state.w)):
             state.A[x][y][z] = S[state.w * (5 * y + x) + z]
-        print(state.A[1][1][63] == S[447])
         return state
 
     @property
@@ -177,52 +177,61 @@ def sponge(N: BitList, b: int, r: int, d: int):
         S = keccak_f(S=S)
 
 
-def keccak(N: bytes, d: int, c: int, sha_mode: bool = False):
-    N_compatible: BitList = bytes_to_bitlist(N, append_sha=sha_mode)
-    result = sponge(N=N_compatible, d=d, r=1600 - c, b=1600)
-    return bitlist_to_bytes(result)
+def keccak(N: str, d: int, c: int, sha_mode: bool = False) -> str:
+    N_compatible: BitList = hex_to_bitlist(N) + ([0, 1] if sha_mode else [])
+    result = sponge(N=N_compatible, d=d, r=1600-c, b=1600)
+    return bitlist_to_hex(result)
 
 
-def bytes_to_bitlist(bytelist: bytes, append_sha) -> BitList:
-    bitstr = "".join([bin(byte)[2:].zfill(8) for byte in bytelist])
-    bitlist = [int(flag) for flag in bitstr]
-    if append_sha:
-        bitlist += [0, 1]
-    return bitlist
-
-
-def bitlist_to_bytes(bitlist: BitList) -> bytes:
-    result = b''
-    for i in range(0, len(bitlist), 8):
-        bit_string = "".join([str(bit) for bit in bitlist[i:i + 8]])
-        byte = int(bit_string, base=2).to_bytes(length=1, byteorder="big")
-        result += byte
-    return result
-
-
-def sha3_224(message: bytes):
+def sha3_224(message: str):
     return keccak(message, c=448, d=224, sha_mode=True)
 
 
-def sha3_256(message: bytes):
+def sha3_256(message: str):
     return keccak(message, c=512, d=256, sha_mode=True)
 
 
-def sha3_384(message: bytes):
+def sha3_384(message: str):
     return keccak(message, c=768, d=384, sha_mode=True)
 
 
-def sha3_512(message: bytes):
+def sha3_512(message: str):
     return keccak(message, c=1024, d=512, sha_mode=True)
 
 
-def get_hash(message: str, fun: Callable[[bytes], bytes]):
-    message_bytes = message.encode()
-    hash: bytes = fun(message_bytes)
-    return hash.hex()
+def get_hash(message: str, fun: Callable[[str], str]):
+    message_hex = message.encode().hex()
+    digest = fun(message_hex)
+    return digest
+
+def hex_to_bitlist(hexstr: str) -> BitList:
+    bit_str = ""
+    clean_hex = hexstr[2:] if hexstr.startswith("0x") else hexstr
+    for n in range(0, len(clean_hex), 2):
+        byte = clean_hex[n:n+2]
+        byte_int = int(byte, base=16)
+        byte_binary = bin(byte_int)[2:].zfill(8)
+        bit_str += byte_binary
+    result = [int(bit) for bit in bit_str]
+    return result
+
+def bitlist_to_hex(bitlist: BitList) -> str:
+    if not len(bitlist) % 8 == 0:
+        raise Exception("Bit list cannot be converted to hex (the length of list is not a multiple of 8)")
+    bit_str = "".join([str(bit) for bit in bitlist])
+    result = ""
+    for n in range(0, len(bit_str), 8):
+        byte_binary = bit_str[n:n+8]
+        byte_int = int(byte_binary, base=2)
+        byte_hex = hex(byte_int)[2:].zfill(2)
+        result += byte_hex
+    return result
 
 
 if __name__ == "__main__":
-    m = "test string"*50
-    hash = get_hash(m, sha3_256)
-    print
+    m1= b"krys".hex()
+    m2 = b"krxs".hex()
+    h1 = get_hash(m, sha3_256)
+    h2 = get_hash(m1, sha3_256)
+    print(h1)
+    print(h2)
