@@ -250,6 +250,6 @@ d523f1ced7a00a059d3935a3a372fa28328ece8abac1106935abfbf366065479 # dla stringa "
 ##### Czy to źle, że się różni?
 No nie do końca. To nie oznacza, że implementacja jest zła.
 Po prostu nie zostały zaimplementowane te funkcje które przekształcają wiadomość zgodnie z FIPS 202.
-(dużo zachodu z tym a i też po co) \
+(dużo zachodu z tym a i też po co, to nie jest celem projektu) \
 Ale my mamy algorytm Keccak, który jest generyczny więc nawet tego nie musimy robić.
 
