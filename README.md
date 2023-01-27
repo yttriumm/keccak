@@ -137,7 +137,7 @@ czyli ogółem rund jest n<sub>r</sub>
 
 To po co w opisie Keccak-p są takie dziwne indeksy?
 To dlatego, żeby rundy Keccak-f i Keccak-p przy tym samym b były kompatybilne.\
-Tzn, dla w=8 (czyli 25 * 2^8 = 1600 bitów stanu) mamy ściśle określone 24 rundy w Keccak-f, ale możemy mieć tyle rund w Keccak-p ile chcemy. \
+Tzn, dla w=64 log2w=8 (czyli 25 * 2^8 = 1600 bitów stanu) mamy ściśle określone 24 rundy w Keccak-f, ale możemy mieć tyle rund w Keccak-p ile chcemy. \
 I jak w Keccak-p mamy np 19 rund, to te 19 rund w Keccak-p są ostatnimi 19 rundami Keccak-f.\
 A jak w Keccak-p mamy rund 30, czyli więcej, to 24 rundy Keccak-f to są ostatnie 24 rundy Keccak-p (indeksy mamy wtedy ujemne).
 
