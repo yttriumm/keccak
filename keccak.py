@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import List, Iterable, Tuple, Callable
 from itertools import product
 
@@ -8,7 +7,8 @@ Bit = int
 Bit3DMatrix = List[List[List[int]]]
 BitList = List[Bit]
 b_to_l = {25: 0, 50: 1, 100: 2, 200: 3, 400: 4, 800: 5, 1600: 6}
-from Crypto.Hash.keccak import Keccak_Hash
+
+
 
 def pad(m: int, r: int) -> BitList:
     j = (-m - 2) % r
@@ -231,7 +231,7 @@ def bitlist_to_hex(bitlist: BitList) -> str:
 if __name__ == "__main__":
     m1= b"krys".hex()
     m2 = b"krxs".hex()
-    h1 = get_hash(m, sha3_256)
-    h2 = get_hash(m1, sha3_256)
+    h1 = get_hash(m1, sha3_512)
+    h2 = get_hash(m2, sha3_512)
     print(h1)
     print(h2)
